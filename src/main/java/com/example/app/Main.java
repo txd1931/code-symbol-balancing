@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.InvalidParameterException;
 import java.util.EmptyStackException;
 
 import com.example.app.util.Stack;
@@ -15,11 +16,20 @@ public class Main {
   private static final String CLOSING_SYMBOLS = "}])";
 
   public static void main(String[] args) {
+    validateArgs(args);
     String[] lines;
     int[] errorLocation;
     lines = readFile(args[0]);
     errorLocation = findErrorLocation(lines);
     outputResult(errorLocation);
+  }
+
+  private static void validateArgs(String[] args){
+    if (args == null) 
+      throw new InvalidParameterException("No file found");
+    if (args.length > 1) {
+      throw new InvalidParameterException("No extra parameters are accepted");
+    }
   }
 
   private static String[] readFile(String path) {
@@ -44,18 +54,18 @@ public class Main {
         }
         if (CLOSING_SYMBOLS.indexOf(character) != -1) {
           try {
-            if (CLOSING_SYMBOLS.indexOf(character) == OPENING_SYMBOLS.indexOf((char)symbols.peek())) 
+            if (CLOSING_SYMBOLS.indexOf(character) == OPENING_SYMBOLS.indexOf((char) symbols.peek()))
               symbols.pop();
             else
-              return new int[]{i, j};
+              return new int[] { i, j };
           } catch (EmptyStackException e) {
-            return new int[]{i, j};
+            return new int[] { i, j };
           }
         }
       }
     }
     if (!symbols.empty())
-      return new int[]{-1, -1};
+      return new int[] { -1, -1 };
     return null;
   }
 
