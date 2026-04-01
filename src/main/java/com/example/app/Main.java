@@ -25,8 +25,8 @@ public class Main {
   }
 
   private static void validateArgs(String[] args){
-    if (args == null) 
-      throw new InvalidParameterException("No file found");
+    if (args.length == 0) 
+      throw new InvalidParameterException("No file was found");
     if (args.length > 1) {
       throw new InvalidParameterException("No extra parameters are accepted");
     }
@@ -57,9 +57,9 @@ public class Main {
             if (CLOSING_SYMBOLS.indexOf(character) == OPENING_SYMBOLS.indexOf((char) symbols.peek()))
               symbols.pop();
             else
-              return new int[] { i, j };
+              return new int[] { i+1, j+1 };
           } catch (EmptyStackException e) {
-            return new int[] { i, j };
+            return new int[] { i+1, j+1 };
           }
         }
       }
